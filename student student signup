@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Signup - KSA Examination System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      body {
+        font-family: 'Segoe UI', 'Arial', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .main-content {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+        min-height: calc(100vh - 200px);
+        margin-top: 80px; /* Account for fixed navbar */
+      }
+      
+      .signup-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        padding: 3rem 2.5rem;
+        max-width: 700px;
+        width: 100%;
+        border: 1px solid rgba(255,255,255,0.2);
+        margin: 0 auto;
+      }
+      
+      .signup-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+      
+      .signup-icon {
+        font-size: 3rem;
+        color: #667eea;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .signup-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+      
+      .signup-subtitle {
+        font-size: 1rem;
+        color: #6c757d;
+        margin-bottom: 0;
+      }
+      
+      .form-section {
+        margin-bottom: 2rem;
+      }
+      
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+      }
+      
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      
+      .form-group label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-size: 0.9rem;
+      }
+      
+      .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+      }
+      
+      .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        background: #ffffff;
+      }
+      
+      .form-control::placeholder {
+        color: #adb5bd;
+      }
+      
+      .btn-signup {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        padding: 0.75rem 2.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        width: 100%;
+        margin-top: 1rem;
+      }
+      
+      .btn-signup:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        color: white;
+      }
+      
+      .login-link {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e9ecef;
+      }
+      
+      .login-link a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+      
+      .login-link a:hover {
+        color: #5a6fd8;
+        text-decoration: underline;
+      }
+      
+      .required-field::after {
+        content: " *";
+        color: #dc3545;
+        font-weight: bold;
+      }
+      
+      @media (max-width: 768px) {
+        .signup-card {
+          padding: 2rem 1.5rem;
+          margin: 1rem;
+        }
+        
+        .signup-title {
+          font-size: 1.8rem;
+        }
+        
+        .form-row {
+          flex-direction: column;
+        }
+        
+        .form-group {
+          margin-bottom: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {% include "exam/navbar.html" %}
+    
+    <div class="main-content">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="signup-card">
+              <div class="signup-header">
+                <div class="signup-icon">
+                  <i class="fas fa-user-plus"></i>
+                </div>
+                <h1 class="signup-title">Student Signup</h1>
+                <p class="signup-subtitle">Create your account to start taking online examinations</p>
+              </div>
+              
+              <form method="POST" autocomplete="off" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                  <h3 class="section-title">
+                    <i class="fas fa-user me-2"></i>Personal Information
+                  </h3>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="first_name" class="required-field">First Name</label>
+                        {% render_field userForm.first_name|attr:'required:true' class="form-control" placeholder="Enter your first name" %}
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="last_name" class="required-field">Last Name</label>
+                        {% render_field userForm.last_name|attr:'required:true' class="form-control" placeholder="Enter your last name" %}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="mobile" class="required-field">Mobile Number</label>
+                        {% render_field studentForm.mobile|attr:'required:true' class="form-control" placeholder="Enter your mobile number" %}
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="address" class="required-field">Address</label>
+                        {% render_field studentForm.address|attr:'required:true' class="form-control" placeholder="Enter your address" %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-section">
+                  <h3 class="section-title">
+                    <i class="fas fa-lock me-2"></i>Account Credentials
+                  </h3>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="username" class="required-field">Username</label>
+                        {% render_field userForm.username|attr:'required:true' class="form-control" placeholder="Choose a unique username" %}
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="password" class="required-field">Password</label>
+                        <div class="input-group">
+                          {% render_field userForm.password|attr:'required:true' class="form-control" placeholder="Create a strong password" %}
+                          <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="confirm_password" class="required-field">Confirm Password</label>
+                        <div class="input-group">
+                          {% render_field userForm.confirm_password|attr:'required:true' class="form-control" placeholder="Re-enter your password" %}
+                          <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                            <i class="fas fa-eye"></i>
+                          </button>
+                        </div>
+                        {% if userForm.confirm_password.errors %}
+                          <div class="text-danger small mt-1">{{ userForm.confirm_password.errors.0 }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-section">
+                  <h3 class="section-title">
+                    <i class="fas fa-users me-2"></i>Batch Selection
+                  </h3>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="batch" class="required-field">Select Batch</label>
+                        {% render_field studentForm.batch|attr:'required:true' class="form-control" %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-signup">
+                  <i class="fas fa-user-plus me-2"></i>Create Account
+                </button>
+              </form>
+              
+              <div class="login-link">
+                <p>Already have an account? <a href="studentlogin">Sign in here</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {% include "exam/footer.html" %}
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      (function(){
+        const pwd = document.getElementById('id_password');
+        const cpwd = document.getElementById('id_confirm_password');
+        const t1 = document.getElementById('togglePassword');
+        const t2 = document.getElementById('toggleConfirmPassword');
+        function toggle(input, btn){
+          if(!input || !btn) return;
+          const icon = btn.querySelector('i');
+          btn.addEventListener('click', function(){
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            if(icon){ icon.classList.toggle('fa-eye'); icon.classList.toggle('fa-eye-slash'); }
+          });
+        }
+        toggle(pwd, t1);
+        toggle(cpwd, t2);
+      })();
+    </script>
+  </body>
+</html>
+
