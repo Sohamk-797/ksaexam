@@ -1,0 +1,31 @@
+Path A — keep one port, maximize stability with Uvicorn workers=8
+
+What to change in your run_uvicorn.ps1:
+
+Pin latest Uvicorn & pure-Python protocol on Windows
+
+Force the Windows-friendly stack explicitly (avoids C extensions/edge cases):
+
+add --loop asyncio
+
+add --http h11
+
+Keep --ws auto (default) or omit entirely.
+
+Tweak queueing & rotation
+
+Add --backlog 512 (Windows is less happy with very large backlogs).
+
+Add --limit-max-requests 5000 (recycle workers to avoid long-lived quirks).
+
+Keep --limit-concurrency 500 (good backpressure).
+
+Actually set 8 workers
+
+Pass -Workers 8 (and remove 6 from the .bat so they don’t disagree).
+
+Strongly recommended before you run:
+
+Upgrade runtime once in your venv:
+
+pip install -U "uvicorn[standard]" h11
